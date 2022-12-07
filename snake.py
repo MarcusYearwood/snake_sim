@@ -40,6 +40,13 @@ class Snake:
         screen.update()
         time.sleep(speed)
 
+    # get next position
+    def next_pos(self):
+        x = head.xcor()
+        y = head.ycor()
+        if head.heading() == UP:
+            pass
+
     def add_segment(self, position):
         turt = Turtle("square")
         turt.color("white")

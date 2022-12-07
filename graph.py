@@ -1,3 +1,7 @@
+from queue import Queue
+from point import Point
+
+
 class Graph:
     def __init__(self, width, height, blockSize):
         self.width = width
@@ -5,23 +9,46 @@ class Graph:
         self.blockSize = blockSize
         self.grid = [[]]
         self.adjacencyList = {}
+        self.create_grid()
+        self.make_adjacency_list()
+
+    def find_route_bfs(self, start, end):
+        previous = {}
+        visited = []
+        frontier = Queue()
+
+        current = start
+        frontier.put(current)
+        visited.add(current)
+        while not frontier.empty():
+            current = frontier.get()
+            for neighbor in self.adjacencyList[current]::
+                if neighbor not in visited:
+                    previous.update(neighbor, current)
+                    visited.add(neighbor)
+                    frontier.add(neighbor)
+
+        result = []
+        result.append(end)
+        curr = previous[end]
+        while current != start:
+            result.add(curr)
+            curr = previous[curr]
+        result.add(curr)
+        result.reverse()
+        return result
+
 
 
     def create_grid(self):
         row = 0
         for y in range(int(self.height / self.blockSize / 2) + 1, int(-self.height / self.blockSize / 2), -1):
             for x in range(int(-self.width / self.blockSize / 2) + 1, int(self.width / self.blockSize / 2)):
-                # turt = Turtle()
-                # turt.penup()
-                # turt.showturtle()
-                # turt.goto(x*self.blockSize, y*self.blockSize)
-                # turt.color("white")
                 point = Point(x * self.blockSize, y * self.blockSize)
                 self.grid[row].append(point)
                 self.adjacencyList.update({point: []})
             self.grid.append([])
             row += 1
-        # screen.update()
     
     def make_adjacency_list(self):
         for row in range(0, len(self.grid)):
