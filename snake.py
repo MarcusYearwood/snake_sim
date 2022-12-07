@@ -18,38 +18,15 @@ class Snake:
     global segments
     segments = []
 
-    global adjacencyList
-    adjacencyList = {}
-
-    global grid
-    grid = [[]]
-
 
     def __init__(self, length, screen):
-        self.create_grid()
-        self.make_adjacency_list()
+        self.graphDriver = Graph(SCREEN_WIDTH, SCREEN_HEIGHT, BLOCK_SIZE)
         self.drawBorder(screen)
         for turtle in range(0, length):
             self.add_segment((turtle * BLOCK_SIZE * -1, 0))
         screen.update()
         self.head = segments[0]
         self.commandQueue = []
-
-    def create_grid(self):
-        row = 0
-        for y in range(int(SCREEN_HEIGHT / BLOCK_SIZE / 2) + 1, int(-SCREEN_HEIGHT / BLOCK_SIZE / 2), -1):
-            for x in range(int(-SCREEN_WIDTH / BLOCK_SIZE / 2) + 1, int(SCREEN_WIDTH / BLOCK_SIZE / 2)):
-                # turt = Turtle()
-                # turt.penup()
-                # turt.showturtle()
-                # turt.goto(x*BLOCK_SIZE, y*BLOCK_SIZE)
-                # turt.color("white")
-                point = Point(x * BLOCK_SIZE, y * BLOCK_SIZE)
-                grid[row].append(point)
-                adjacencyList.update({point: []})
-            grid.append([])
-            row += 1
-        # screen.update()
 
     #speed is time between updates (closer to 0 is faster)
     def go(self, screen, speed):
@@ -183,51 +160,4 @@ class Snake:
         border.goto(SCREEN_WIDTH/-2, SCREEN_HEIGHT/-2)
         screen.update()
 
-    def make_adjacency_list(self):
-        for row in range(0, len(grid)):
-            for col in range(0, len(grid[row])):
-                # if on the top
-                if row == 0:
-                    # if on the left
-                    if col == 0:
-                        adjacencyList[grid[row][col]].append(grid[row + 1][col])
-                        adjacencyList[grid[row][col]].append(grid[row][col + 1])
-                    # if on the right
-                    elif col == len(grid[row]) - 1:
-                        adjacencyList[grid[row][col]].append(grid[row + 1][col])
-                        adjacencyList[grid[row][col]].append(grid[row][col - 1])
-                    # else
-                    else:
-                        adjacencyList[grid[row][col]].append(grid[row + 1][col])
-                        adjacencyList[grid[row][col]].append(grid[row][col - 1])
-                        adjacencyList[grid[row][col]].append(grid[row][col + 1])
-                # if on the bottom
-                elif row == len(grid) - 2:
-                    # if on left
-                    if col == 0:
-                        adjacencyList[grid[row][col]].append(grid[row - 1][col])
-                        adjacencyList[grid[row][col]].append(grid[row][col + 1])
-                    # if on right
-                    elif col == len(grid[row]) - 1:
-                        adjacencyList[grid[row][col]].append(grid[row - 1][col])
-                        adjacencyList[grid[row][col]].append(grid[row][col - 1])
-                    # else
-                    else:
-                        adjacencyList[grid[row][col]].append(grid[row - 1][col])
-                        adjacencyList[grid[row][col]].append(grid[row][col + 1])
-                        adjacencyList[grid[row][col]].append(grid[row][col - 1])
-                # if on left
-                elif col == 0:
-                    adjacencyList[grid[row][col]].append(grid[row + 1][col])
-                    adjacencyList[grid[row][col]].append(grid[row - 1][col])
-                    adjacencyList[grid[row][col]].append(grid[row][col + 1])
-                # if on right
-                elif col == len(grid[row]) - 1:
-                    adjacencyList[grid[row][col]].append(grid[row - 1][col])
-                    adjacencyList[grid[row][col]].append(grid[row + 1][col])
-                    adjacencyList[grid[row][col]].append(grid[row][col - 1])
-                else:
-                    adjacencyList[grid[row][col]].append(grid[row + 1][col])
-                    adjacencyList[grid[row][col]].append(grid[row - 1][col])
-                    adjacencyList[grid[row][col]].append(grid[row][col + 1])
-                    adjacencyList[grid[row][col]].append(grid[row][col - 1])
+    
